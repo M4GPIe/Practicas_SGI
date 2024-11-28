@@ -233,7 +233,7 @@ void display()
 	glPopAttrib();
 	glPopMatrix();
 
-	glFlush();
+	glutSwapBuffers();
 }
 
 // Funcion de atencion al redimensionamiento
@@ -269,8 +269,8 @@ void reshape(GLint w, GLint h)
 int main(int argc, char** argv)
 {
 	// Inicializaciones
-	glutInit(&argc, argv);	//inicializar glut
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);	//un solo buffer de color, colores RGB y uso de depth buffer para 3D
+	glutInit(&argc, argv);	
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);	//doble buffer para evitar parpadeos
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(50, 50);
 

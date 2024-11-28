@@ -136,10 +136,10 @@ GLuint pintarEngranaje(float altura, int nPuntos, float radio, float anchura) {
 	//dibujamos la cara delantera
 	glCallList(cara);
 
-	glPushMatrix();	
+	glPushMatrix();
 	glTranslatef(0, 0, anchura);	//trasladamos a la cara trasera
-	glColor3fv(NEGRO);	
-	glCallList(cara);	
+	glColor3fv(NEGRO);
+	glCallList(cara);
 	glPopMatrix();
 
 	//puntos de la cara trasera para dibujar los cuadrados que las unen
@@ -150,15 +150,15 @@ GLuint pintarEngranaje(float altura, int nPuntos, float radio, float anchura) {
 	for (int i = 0; i < nPuntos; i++)
 	{
 		glPushAttrib(GL_ALL_ATTRIB_BITS); //hacemos push para añadir una nueva capa de atributos y no modificar la anterior
-		glColor3f(0, 0, 0.3);	
+		glColor3f(0, 0, 0.3);
 
 		//lados del pico
 		cb::quad(picosF[(i) % nPuntos], picosB[(i) % nPuntos], vallesB[(i + 1) % nPuntos], vallesF[(i + 1) % nPuntos]);
 		cb::quad(picosF[(i + 1) % nPuntos], picosB[(i + 1) % nPuntos], vallesB[(i + 1) % nPuntos], vallesF[(i + 1) % nPuntos]);
 
 		//lado del interior del eje
-		cb:quad(ejesF[i % nPuntos], ejesB[i % nPuntos], ejesB[(i + 1) % nPuntos], ejesF[(i + 1) % nPuntos]);
-		glPopAttrib();	
+	cb:quad(ejesF[i % nPuntos], ejesB[i % nPuntos], ejesB[(i + 1) % nPuntos], ejesF[(i + 1) % nPuntos]);
+		glPopAttrib();
 
 	}
 	glEndList();
@@ -171,7 +171,7 @@ GLuint pintarEngranaje(float altura, int nPuntos, float radio, float anchura) {
 void renderTexto(const char* texto, float x, float y) {
 	// cambiar a proyección ortográfica para dibujar texto en 2D
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();  
+	glPushMatrix();
 	glLoadIdentity();
 	gluOrtho2D(0, 100, 0, 100);  // coordenadas en porcentaje de la ventana
 
@@ -230,7 +230,7 @@ void init(void)
 	// rueda frontal
 	glBegin(GL_QUAD_STRIP);
 	for (int i = 0; i <= 360; i++) {
-		int index = i % 360;  
+		int index = i % 360;
 		glVertex3f(circunferenciaExterior[index].x, circunferenciaExterior[index].y, 4);
 		glVertex3f(circunferenciaInterior[index].x, circunferenciaInterior[index].y, 4);
 	}
@@ -255,7 +255,7 @@ void init(void)
 	// interior rueda frontal
 	glBegin(GL_QUAD_STRIP);
 	for (int i = 0; i <= 360; i++) {
-		int index = i % 360; 
+		int index = i % 360;
 		glVertex3f(circunferenciaExterior[index].x, circunferenciaExterior[index].y, 3);
 		glVertex3f(circunferenciaInterior[index].x, circunferenciaInterior[index].y, 3);
 	}
@@ -264,7 +264,7 @@ void init(void)
 	// rueda trasera
 	glBegin(GL_QUAD_STRIP);
 	for (int i = 0; i <= 360; i++) {
-		int index = i % 360; 
+		int index = i % 360;
 		glVertex3f(circunferenciaExterior[index].x, circunferenciaExterior[index].y, -4);
 		glVertex3f(circunferenciaInterior[index].x, circunferenciaInterior[index].y, -4);
 	}
@@ -289,7 +289,7 @@ void init(void)
 	// interior cara trasera
 	glBegin(GL_QUAD_STRIP);
 	for (int i = 0; i <= 360; i++) {
-		int index = i % 360;  
+		int index = i % 360;
 		glVertex3f(circunferenciaExterior[index].x, circunferenciaExterior[index].y, -3);
 		glVertex3f(circunferenciaInterior[index].x, circunferenciaInterior[index].y, -3);
 	}
@@ -331,7 +331,7 @@ void init(void)
 	glNewList(CABINA, GL_COMPILE);
 	glColor3f(0.5, 0, 0);
 
-	vector<Vec3> puntosBarra = puntosCircunferencia(0.5, 360);  
+	vector<Vec3> puntosBarra = puntosCircunferencia(0.5, 360);
 
 	glColor3f(0.529, 0.337, 0.231);
 
@@ -345,9 +345,9 @@ void init(void)
 	// cabina
 	glPushMatrix();
 	glColor3f(0.4667, 0.4627, 0.7333);
-	glTranslatef(0, -2, 0);  
-	glScalef(3, 2, 2);  
-	glutSolidCube(2);     
+	glTranslatef(0, -2, 0);
+	glScalef(3, 2, 2);
+	glutSolidCube(2);
 
 	glPopMatrix();
 
@@ -356,8 +356,8 @@ void init(void)
 
 //dibujar la escena completa
 void dibujarNoria() {
-	
-	//base de la noria: circunferencias y ejes
+
+	//base de la noria: circunferencias y eje
 	glPushMatrix();
 	glCallList(NORIA);
 	glPopMatrix();
@@ -430,12 +430,18 @@ void dibujarNoria() {
 	glutSolidCube(1);
 	glPopMatrix();
 
-	
+	//engranaje
+	glPushMatrix();
+	glPushAttrib(GL_CURRENT_BIT);
+	glColor3f(0.7176, 0.6706, 0.8863);
+	glTranslatef(0, 0, 11);
+	pintarEngranaje(3, 10, 2, 5);
+	glPopAttrib();
 	glPopMatrix();
 }
 
 void dibujarControles() {
-	glColor3f(0.0f, 0.0f, 0.0f); 
+	glColor3f(0.0f, 0.0f, 0.0f);
 	renderTexto("Controles:", 5, 95);
 	renderTexto("Planta / Alzado / Perfil: 1/2/3", 5, 90);
 	renderTexto("Mover arriba: Flecha ARRIBA", 5, 85);
@@ -506,13 +512,13 @@ void reshape(int w, int h) {
 //flechas de movimiento
 void specialKeys(int key, int x, int y) {
 	switch (key) {
-	case GLUT_KEY_UP:    
+	case GLUT_KEY_UP:
 		angx += 2.0;
 		break;
-	case GLUT_KEY_DOWN:  
+	case GLUT_KEY_DOWN:
 		angx -= 2.0;
 		break;
-	case GLUT_KEY_LEFT:  
+	case GLUT_KEY_LEFT:
 		angy += 2.0;
 		break;
 	case GLUT_KEY_RIGHT:
@@ -575,8 +581,8 @@ int main(int argc, char** argv) {
 
 	init();
 
-	glutReshapeFunc(reshape);	
-	glutDisplayFunc(display);	
+	glutReshapeFunc(reshape);
+	glutDisplayFunc(display);
 
 	glutIdleFunc(idle);			//cambios a hacer para el siguiente frame a ejecutar cuando ya no queden eventos en la cola
 
